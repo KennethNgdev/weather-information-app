@@ -1,118 +1,55 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import HomeScreen from './src/screens/home'
+import React, { Component,useState } from 'react';
+import { ScrollView, SafeAreaView, Text, TouchableOpacity} from 'react-native';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { StartScreen } from './src/screens/StartScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import WeatherForecast from './src/screens/WeatherForecast';
+import SlideBottom from './src/screens/SlideBottom';
+import ZoomImage from './src/screens/ZoomImage';
+import SplashScreen from './src/screens/SplashScreen';
+import { useNavigation } from '@react-navigation/native';
+import HomePage from './src/screens/home';
+import GetWeatherImg from './src/screens/weatherImg';
+import { GestureResponderEvent } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const Stack = createStackNavigator();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const MyHome = () => {
+  const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView>
+        
+        <HomePage/>
+        <GetWeatherImg/>
+        <SlideBottom style={{zIndex: 100}}>
+          <WeatherForecast />
+        </SlideBottom>
     </SafeAreaView>
-  );
+  )
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+class App extends Component {
+  state = {
+  }
+
+  render() {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SplashScreen" screenOptions={({ route, navigation }) => ({headerShown: false, gestureEnabled: true})} >
+          <Stack.Screen name="Start" component={MyHome} />
+          <Stack.Screen name="ZoomImage" component={ZoomImage} />
+          <Stack.Screen name="SplashScreen" component={SplashScreen} options={() => ({ headerShown: false, animationEnabled: false })} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
+  }
+}
 
 export default App;
